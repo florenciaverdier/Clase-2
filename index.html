@@ -33,10 +33,10 @@
 
             <!-- GRÁFICA 1: línea de tiempo -->
             <article>
-                <h2>Evolución de la población en la Región Metropolitana Chilena</h2>
+                <h2>Evolución de la población en la RM Chilena en el tiempo</h2>
                 <p>Con una <a href="https://datavizcatalogue.com/ES/metodos/grafica_de_linea.html" target="_blank">gráfica de línea</a></p>
                 <div>
-                    <svg viewBox="0 0 570 210">
+                    <svg viewBox="0 0 700 210">
                         <!-- El grupo se voltea verticalmente para que Y crezca hacia arriba (en SVG crece hacia abajo por defecto) -->
                         <g transform="translate(0,195) scale(1,-1)" id="lineas"></g>
                         <g id="years"></g>
@@ -46,10 +46,10 @@
 
             <!-- GRÁFICA 2: barras horizontales -->
             <article>
-                <h2>Población en las distintas regiones de Chile</h2>
+                <h2>Top 10 comunas más pobladas de Chile en 2017</h2>
                 <p>Con una <a href="https://datavizcatalogue.com/ES/metodos/graficos_de_barras.html" target="_blank">gráfica de barras</a></p>
                 <div>
-                    <svg viewBox="0 0 500 100" id="barras"></svg>
+                    <svg viewBox="0 0 500 150" id="barras"></svg>
                 </div>
             </article>
 
@@ -64,8 +64,8 @@
 
             // Fuente: https://es.wikipedia.org/wiki/Anexo:Crecimiento_poblacional_de_Santiago_de_Chile
             var lineal = {
-                censos:   [1820,  1854,   1865,   1888,   1920,   1940,   1952,    1960,    1982,    1992,    2002,    2012],
-                censados: [46000, 69018, 115337, 256000, 507296, 952075, 1350409, 1907378, 3899619, 4729118, 5428590, 7057491]
+                censos:   [1820,  1854,   1865,   1888,   1920,   1940,   1952,    1960,    1982,    1992,    2002,    2012,2017, 2024],
+                censados: [46000, 69018, 115337, 256000, 507296, 952075, 1350409, 1907378, 3899619, 4729118, 5428590, 7057491, 7112808, 7400741]
             };
 
             var coordenadas = ""; // acumulará los pares x,y de la polyline
@@ -78,40 +78,45 @@
                 var y = Math.round(poblacion * 0.000025);
 
                 coordenadas += x + "," + y + " ";
-                etiquetas   += `<text x="${i * 50}" y="205" font-size="6">${lineal.censos[i]}</text>`;
+                etiquetas   += `<text x="${i * 50}" y="205" font-size="8">${lineal.censos[i]}</text>`;
             });
 
             // Dibujamos la línea conectando todos los puntos
             document.querySelector("#lineas").innerHTML =
-                `<polyline points="${coordenadas}" fill="none" stroke="black" stroke-width="0.5" />`;
+                `<polyline points="${coordenadas}" fill="none" stroke="pink" stroke-width="4" />`;
 
             // Agregamos los años debajo de la línea
-            document.querySelector("#years").innerHTML = etiquetas;
+            document.querySelector("#years").innerHTML = etiquetas
+                ;
 
 
             // ── GRÁFICA 2: barras ─────────────────────────────────────────────
 
             // Fuente: https://es.wikipedia.org/wiki/Anexo:Regiones_de_Chile_por_población
             var regiones = [
-                { region: "Metropolitana",   numero: 8420729 },
-                { region: "Valparaíso",      numero: 2010849 },
-                { region: "Biobío",          numero: 1681225 },
-                { region: "Maule",           numero: 1171982 },
-                { region: "Araucanía",       numero: 1032064 },
-                { region: "O'Higgins",       numero: 1025586 },
-                { region: "Demás regiones",  numero: 4723998 }
+                { region: "Puente Alto",   numero: 573935 },
+                { region: "Maipú",      numero: 521627 },
+                { region: "Santiago",          numero:498698 },
+                { region: "La Florida",           numero: 366376 },
+                { region: "Antofagasta",       numero: 348517 },
+                { region: "Viña del Mar",       numero: 332875 },
+                { region: "San Bernardo",  numero: 301313 } ,
+                { region: "Valparaíso",  numero: 296555 } ,
+                { region: "Las Condes",  numero: 294838 } ,
+                { region: "Temuco",  numero: 282415 }
             ];
 
             regiones.forEach(function(d, i) {
                 // El ancho de cada barra es proporcional a la población
-                var ancho = d.numero / 20000;
+                var ancho = d.numero / 2000;
 
                 // Cada fila baja 15 unidades con translate
                 document.querySelector("#barras").innerHTML +=
                     `<g transform="translate(0, ${i * 15})">
-                        <rect x="0" y="0" width="${ancho}" height="10" />
-                        <text x="3" y="7" fill="white" font-size="5">${d.region}</text>
-                        <text x="${ancho + 3}" y="7" font-size="6">${new Intl.NumberFormat("es-ES").format(d.numero)} habitantes</text>
+                        <text x= "0" y="7" fill="pink" font-size="8">${i+1}</text>
+                        <rect x="10" y="0" width="${ancho}" height="10" fill="pink"/>
+                        <text x="20" y="7" fill="white" font-size="8">${d.region}</text>
+                        <text x="${ancho + 20}" y="7" font-size="6">${new Intl.NumberFormat("es-ES").format(d.numero)} habitantes</text>
                     </g>`;
             });
         </script>
